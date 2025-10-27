@@ -10,7 +10,7 @@
   <div id="gameContainer">
     <div id="startScreen" class="overlay">
       <h1>Dino Sky Runner</h1>
-      <p>Press Start and then Space to Jump</p>
+      <p>Press Start and then Space or Tap to Jump</p>
       <button id="startBtn">Start Game</button>
     </div>
 
@@ -26,15 +26,14 @@
 
       <div id="ground"></div>
 
-      <div id="scoreContainer">
-        <div id="score">Score: 0</div>
-        <div id="highScore">High Score: 0</div>
+      <div id="scoreboard">
+        <span id="score">Score: 0</span>
+        <span id="highScore">High Score: 0</span>
       </div>
 
       <div id="gameOver" class="overlay hidden">
         <h2>Game Over</h2>
         <p id="finalScore"></p>
-        <p id="finalHighScore"></p>
         <button id="restartBtn">Restart</button>
       </div>
     </div>
@@ -46,4 +45,7 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+
+
 

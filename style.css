@@ -81,7 +81,7 @@ body {
   transition: bottom 0.05s ease-out;
 }
 
-/* Ground */
+/* Ground (animated) */
 #ground {
   position: absolute;
   bottom: 0;
@@ -107,32 +107,17 @@ body {
   background: url('cactus.png') center/contain no-repeat;
 }
 
-/* Score and High Score */
-#scoreContainer {
+/* Scoreboard */
+#scoreboard {
   position: absolute;
   top: 10px;
   right: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  color: white;
   font-size: 18px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-}
-
-#score, #highScore {
-  margin: 2px 0;
-}
-
-/* ✨ Glow Animation when new high score achieved */
-@keyframes glow {
-  0% { color: gold; text-shadow: 0 0 8px gold, 0 0 20px yellow; }
-  100% { color: white; text-shadow: none; }
-}
-
-.glow {
-  animation: glow 1s ease-in-out 5 alternate;
+  color: white;
+  display: flex;
+  gap: 20px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 /* Overlay Screens */
@@ -161,6 +146,28 @@ body {
 
 .hidden {
   display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #gameArea {
+    width: 95vw;
+    height: 50vh;
+  }
+
+  #scoreboard {
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  #dino {
+    width: 50px;
+  }
+
+  .cactus {
+    width: 30px;
+    height: 50px;
+  }
 }
 
 

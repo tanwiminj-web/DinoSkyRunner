@@ -1,12 +1,12 @@
 const dino = document.getElementById("dino");
+const gameArea = document.getElementById("gameArea");
 const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
 const startScreen = document.getElementById("startScreen");
 const gameOver = document.getElementById("gameOver");
 const scoreText = document.getElementById("score");
-const highScoreText = document.getElementById("highScore");
 const finalScore = document.getElementById("finalScore");
-const finalHighScore = document.getElementById("finalHighScore");
+const highScoreText = document.getElementById("highScore");
 const crashSound = document.getElementById("crashSound");
 const bgMusic = document.getElementById("bgMusic");
 const obstacleContainer = document.getElementById("obstacleContainer");
@@ -15,13 +15,12 @@ let isJumping = false;
 let jumpVelocity = 0;
 let gravity = 0.5;
 let score = 0;
+let highScore = localStorage.getItem("highScore") || 0;
 let speed = 6;
 let gameActive = false;
 let obstacles = [];
 let dinoBottom = 50;
 
-// Load high score from localStorage
-let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
 highScoreText.textContent = "High Score: " + highScore;
 
 function startGame() {
@@ -38,9 +37,6 @@ function startGame() {
   bgMusic.currentTime = 0;
   bgMusic.play();
 
-  scoreText.textContent = "Score: 0";
-  highScoreText.textContent = "High Score: " + highScore;
-
   requestAnimationFrame(updateGame);
   setTimeout(spawnObstacle, 1500);
 }
@@ -54,7 +50,7 @@ function jump() {
 function spawnObstacle() {
   if (!gameActive) return;
 
-  const cactusCount = Math.random() < 0.5 ? 1 : 2;
+  const cactusCount = Math.random() < 0.5 ? 1 : 2; // only 1 or 2 cactus
   for (let i = 0; i < cactusCount; i++) {
     const cactus = document.createElement("div");
     cactus.classList.add("cactus");
@@ -70,7 +66,7 @@ function spawnObstacle() {
 function updateGame() {
   if (!gameActive) return;
 
-  // Jump motion
+  // Jump physics
   if (isJumping) {
     dinoBottom += jumpVelocity;
     jumpVelocity -= gravity;
@@ -81,23 +77,22 @@ function updateGame() {
     dino.style.bottom = dinoBottom + "px";
   }
 
-  // Move cactus
+  // Move obstacles
   for (let i = 0; i < obstacles.length; i++) {
     const cactus = obstacles[i];
     let cactusLeft = parseInt(window.getComputedStyle(cactus).left);
     cactus.style.left = cactusLeft - speed + "px";
 
-    // Remove off-screen cactus
+    // Remove cactus if off-screen
     if (cactusLeft < -60) {
       cactus.remove();
       obstacles.splice(i, 1);
       score++;
       scoreText.textContent = "Score: " + score;
-
       if (score % 10 === 0) speed += 1;
     }
 
-    // Collision
+    // Collision detection
     if (cactusLeft < 130 && cactusLeft > 70 && dinoBottom < 100) {
       gameOverFunc();
       return;
@@ -111,22 +106,14 @@ function gameOverFunc() {
   gameActive = false;
   bgMusic.pause();
   crashSound.play();
+  finalScore.textContent = "Your Score: " + score;
 
-  // Update high score with glow effect
   if (score > highScore) {
     highScore = score;
     localStorage.setItem("highScore", highScore);
-    highScoreText.classList.add("glow");
-
-    setTimeout(() => {
-      highScoreText.classList.remove("glow");
-    }, 5000);
   }
 
-  finalScore.textContent = "Your Score: " + score;
-  finalHighScore.textContent = "High Score: " + highScore;
   highScoreText.textContent = "High Score: " + highScore;
-
   gameOver.classList.remove("hidden");
 }
 
@@ -137,8 +124,14 @@ function restartGame() {
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") jump();
 });
+
+document.addEventListener("touchstart", jump);
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", restartGame);
+
+
+
+
 
 
 
