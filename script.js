@@ -15,7 +15,14 @@ let isJumping = false;
 let jumpVelocity = 0;
 let gravity = 0.5;
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0;
+let highScore = localStorage.getItem("highScore");
+if (highScore === null) {
+    highScore = 0;
+    localStorage.setItem("highScore", highScore);
+} else {
+    highScore = parseInt(highScore);
+}
+
 let speed = 6;
 let gameActive = false;
 let obstacles = [];
@@ -128,6 +135,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("touchstart", jump);
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", restartGame);
+
 
 
 
